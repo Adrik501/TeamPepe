@@ -17,7 +17,8 @@ ipcon.connect(HOST, PORT,
 
 ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
     function (connectReason) {
-        ps.setBeep(2000, 0, 500);
+    //    ps.setBeep(2000, 0, 500);
+        playTetrisMelody();
     }
 );
 
@@ -28,5 +29,52 @@ process.stdin.on('data',
         process.exit(0);
     }
 );
+
+function playTetrisMelody() {
+    var melody = [
+        { note: 'E', duration: 500 },
+        { note: 'B', duration: 250 },
+        { note: 'C#', duration: 250 },
+        { note: 'D', duration: 500 },
+        { note: 'C#', duration: 250 },
+        { note: 'B', duration: 250 },
+        { note: 'A', duration: 500 },
+        { note: 'A', duration: 250 },
+        { note: 'C#', duration: 250 },
+        { note: 'E', duration: 500 },
+        { note: 'D', duration: 250 },
+        { note: 'C#', duration: 250 },
+        { note: 'B', duration: 500 },
+        { note: 'B', duration: 250 },
+        { note: 'C#', duration: 250 },
+        { note: 'D', duration: 500 },
+        { note: 'E', duration: 500 },
+        { note: 'C#', duration: 500 },
+        { note: 'A', duration: 500 },
+        { note: 'A', duration: 500 },
+        { note: 'A#', duration: 250 },
+        { note: 'B', duration: 250 },
+        { note: 'C#', duration: 500 },
+        { note: 'E', duration: 500 },
+        { note: 'C#', duration: 500 },
+        { note: 'D', duration: 500 },
+        { note: 'B', duration: 500 },
+        { note: 'C#', duration: 500 },
+        { note: 'A', duration: 500 },
+        { note: 'A', duration: 500 },
+        { note: 'A#', duration: 250 },
+        { note: 'B', duration: 250 },
+        { note: 'C#', duration: 500 },
+        { note: 'E', duration: 500 },
+        { note: 'C#', duration: 500 },
+        { note: 'D', duration: 500 },
+        { note: 'B', duration: 500 }     ];
+    var tempo = 150;
+    for (var i = 0; i < melody.length; i++) {
+        var note = melody[i];
+        var frequency = noteToFrequency(note.note);
+        playTone(frequency, 0, note.duration);
+    }
+    }
 
 ipcon.connect(HOST, PORT);
