@@ -1,8 +1,13 @@
 // Import the required functions and modules
-import { IPConnection } from './assets/content';
-import { setup, temperatureHandler, rgbButtonPressed, motionDetectorHandler, humidityHandler, dualButtonPressedHandler } from './functions';
-
-// Establish connection
+var IPConnection = require('./assets/content').IPConnection;
+var {
+    setup,
+    temperatureHandler,
+    rgbButtonPressed,
+    motionDetectorHandler,
+    humidityHandler,
+    dualButtonPressedHandler
+} = require('./functions');
 const ipcon = new IPConnection();
 ipcon.connect(HOST, PORT);
 
