@@ -1,3 +1,12 @@
+let {
+    HOST, PORT,
+    TEMP, LIGH, HUMI, MOTI, RGBB, DBTN,
+    PIEZ, EPAP, SEG7,
+    IPConnection, BrickletPTCV2, BrickletAmbientLightV3, BrickletHumidityV2,
+    BrickletMotionDetectorV2, BrickletRGBLEDButton, BrickletDualButtonV2, BrickletPiezoSpeakerV2,
+    BrickletEPaper296x128, BrickletSegmentDisplay4x7V2
+} = require('./assets/content');
+
 function setup() {
     if (getBrightness() >= 50) {
         displayTime();
@@ -142,18 +151,18 @@ function dualButtonPressedHandler(buttonL, buttonR, ledL, ledR) {
     var temperatureBricklet = new BrickletPTCV2(TEMP, ipcon);
     var humidityBricklet = new BrickletHumidityV2(HUMI, ipcon);
 
-    if (buttonL == dualButton.BUTTON_STATE_PRESSED) {
+    if (buttonL === dualButton.BUTTON_STATE_PRESSED) {
         displayTemperature((temperatureBricklet.getTemperature() / 100).toString());
         ledL.setSelectedLEDState(0, 2);
-    } else if (buttonL == BrickletDualButtonV2.BUTTON_STATE_RELEASED) {
+    } else if (buttonL === BrickletDualButtonV2.BUTTON_STATE_RELEASED) {
         displayTime();
         ledL.setSelectedLEDState(0, 3);
     }
 
-    if (buttonR == dualButton.BUTTON_STATE_PRESSED) {
+    if (buttonR === dualButton.BUTTON_STATE_PRESSED) {
         displayHumidity((humidityBricklet.getHumidity() / 100).toString());
         ledR.setSelectedLEDState(1, 2);
-    } else if (buttonR == BrickletDualButtonV2.BUTTON_STATE_RELEASED) {
+    } else if (buttonR === BrickletDualButtonV2.BUTTON_STATE_RELEASED) {
         displayTime();
         ledR.setSelectedLEDState(1, 3);
     }
@@ -180,3 +189,19 @@ function ePaper() {
 
     ipcon.disconnect();
 }
+
+module.exports = {
+    setup,
+    temperatureHandler,
+    displayTemperature,
+    displayTime,
+    ringAlarm,
+    setRgbButtonColor,
+    rgbButtonPressed,
+    getBrightness,
+    motionDetectorHandler,
+    humidityHandler,
+    displayHumidity,
+    dualButtonPressedHandler,
+    ePaper
+};

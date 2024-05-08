@@ -1,4 +1,4 @@
-var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer/lib/nodemailer');
 
 var transport = nodemailer.createTransport({
     host: 'server_addr',

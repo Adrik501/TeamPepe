@@ -1,5 +1,5 @@
 // Net
-const HOST = "172.20.10.23";  // Tinkerforge Gerät (wenn USB wert=localhost)
+const HOST = "172.20.10.242";  // Tinkerforge Gerät (wenn USB wert=localhost)
 const PORT = 4223;            // Tinkerforge Standard Port
 
 // UID Sensoren
@@ -15,17 +15,6 @@ const PIEZ = "R7M";       // Piezo Speaker UID
 const EPAP = "XGL";       // E-Paper UID
 const SEG7 = "Tre";       // 4x7 Segment UID
 
-var ipcon = new IPConnection();
-var temp = new BrickletPTCV2(TEMP, ipcon);
-var light = new BrickletAmbientLightV3(LIGH, ipcon);
-var humi = new BrickletHumidityV2(HUMI, ipcon);
-var moti = new BrickletMotionDetectorV2(MOTI, ipcon);
-var rgbb = new BrickletRGBLEDButton(RGBB, ipcon);
-var dbtn = new BrickletDualButtonV2(DBTN, ipcon);
-var piez = new BrickletPiezoSpeakerV2(PIEZ, ipcon);
-var epap = new BrickletEPaper296x128(EPAP, ipcon);
-var seg7 = new BrickletSegmentDisplay4x7V2(SEG7, ipcon);
-
 var tinkerforge = require('tinkerforge');
 var IPConnection = tinkerforge.IPConnection;
 var BrickletPTCV2 = tinkerforge.BrickletPTCV2;
@@ -38,7 +27,26 @@ var BrickletPiezoSpeakerV2 = tinkerforge.BrickletPiezoSpeakerV2;
 var BrickletEPaper296x128 = tinkerforge.BrickletEPaper296x128;
 var BrickletSegmentDisplay4x7V2 = tinkerforge.BrickletSegmentDisplay4x7V2;
 
+var ipcon = new IPConnection();
+var temp = new BrickletPTCV2(TEMP, ipcon);
+var light = new BrickletAmbientLightV3(LIGH, ipcon);
+var humi = new BrickletHumidityV2(HUMI, ipcon);
+var moti = new BrickletMotionDetectorV2(MOTI, ipcon);
+var rgbb = new BrickletRGBLEDButton(RGBB, ipcon);
+var dbtn = new BrickletDualButtonV2(DBTN, ipcon);
+var piez = new BrickletPiezoSpeakerV2(PIEZ, ipcon);
+var epap = new BrickletEPaper296x128(EPAP, ipcon);
+var seg7 = new BrickletSegmentDisplay4x7V2(SEG7, ipcon);
 
+module.exports = {
+    HOST, PORT,
+    TEMP, LIGH, HUMI, MOTI, RGBB, DBTN,
+    PIEZ, EPAP, SEG7,
+    tinkerforge, IPConnection, BrickletPTCV2, BrickletAmbientLightV3, BrickletHumidityV2,
+    BrickletMotionDetectorV2, BrickletRGBLEDButton, BrickletDualButtonV2, BrickletPiezoSpeakerV2,
+    BrickletEPaper296x128, BrickletSegmentDisplay4x7V2,
+    ipcon, temp, light, humi, moti, rgbb, dbtn, piez, epap, seg7
+};
 
 
 
