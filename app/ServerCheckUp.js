@@ -1,7 +1,7 @@
-
 var Tinkerforge = require('tinkerforge');
 const { BrickletHumidityV2, BrickletPTCV2, BrickletPiezoSpeakerV2, BrickletMotionDetectorV2, BrickletAmbientLightV3} = Tinkerforge;
 
+const sendAlertMail = require("./assets/mailer.js");
 
 const HOST = "172.20.10.242";
 const PORT = 4223;
@@ -52,8 +52,9 @@ function checkSensors() {
     getTemperaturePromise().then((temp) => {
         if (temp > ALARM_THRESHOLD_TEMP) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            console.log("Temperature exceeded! Alarm beep activated!");
+            let alertContext = "Temperature limit of " + ALARM_THRESHOLD_TEMP + ' exceeded!';
             alertStatus = true;
+            sendAlertMail(alertContext);
         }
     }).catch((error) => {
         console.error("Temperature Error occurred:", error);
@@ -130,5 +131,7 @@ ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED, function() {
         const result = checkSensors();
         if (result === true) {
             clearInterval(intervalId);
-        }}, 5000);
+        }
+    }, 6000);
 });
+
