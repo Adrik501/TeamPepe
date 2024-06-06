@@ -1,7 +1,6 @@
 let Nodemailer = require('nodemailer');
 
 function sendAlertMail(alertContext){
-    console.log("context " + alertContext);
     let mailTransporter = Nodemailer.createTransport(
         {
             service: 'gmail',
@@ -19,9 +18,9 @@ function sendAlertMail(alertContext){
 
     let mailDetails = {
         from: 'TeamPepe@gmail.com',
-        to: 'aleksandr.uva@gmail.com',
+        to: '*',
         subject: 'Server emergency alert',
-        text: 'The following sensors have issued an alert'
+        text: 'The following sensors have issued an alert: ' + alertContext
     };
 
     mailTransporter
