@@ -12,7 +12,7 @@ const MOTI = "ML4";
 const PIEZ = "R7M";
 const LIGHT = "Pdw";
 
-const ALARM_THRESHOLD_TEMP = 200;
+const ALARM_THRESHOLD_TEMP = 55;
 const ALARM_THRESHOLD_HUMI = 1000;
 const ALARM_THRESHOLD_ILLUMINANCE = 7000;
 
@@ -28,8 +28,8 @@ function checkSensors() {
     getMotionDetectedPromise().then((motionDetected) => {
             if (motionDetected) {
                 speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-                console.log("Motion detected! Alarm beep activated!");
-
+                let alertContext = "Motions detected near the server!";
+                sendAlertMail(alertContext);
                 alertStatus = true;
             }
         }).catch((error) => {
@@ -52,9 +52,9 @@ function checkSensors() {
     getTemperaturePromise().then((temp) => {
         if (temp > ALARM_THRESHOLD_TEMP) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            let alertContext = "Temperature limit of " + ALARM_THRESHOLD_TEMP + ' exceeded!';
-            alertStatus = true;
+            let alertContext = "Temperature limit of " + ALARM_THRESHOLD_TEMP + ' exceeded! \n Current Temperature: ' +temp;
             sendAlertMail(alertContext);
+            alertStatus = true;
         }
     }).catch((error) => {
         console.error("Temperature Error occurred:", error);
@@ -76,7 +76,8 @@ function checkSensors() {
     getHumidityPromise().then((humi) => {
         if (humi > ALARM_THRESHOLD_HUMI) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            console.log("Humidity exceeded! Alarm beep activated!");
+            let alertContext = "Humidity limit of " + ALARM_THRESHOLD_HUMI + ' exceeded! \n Current humidity: ' +humi;
+            sendAlertMail(alertContext);
             alertStatus = true;
         }
     }).catch((error) => {
@@ -99,7 +100,8 @@ function checkSensors() {
     getLightPromise().then((light) => {
         if (light > ALARM_THRESHOLD_ILLUMINANCE) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            console.log("Humidity exceeded! Alarm beep activated!");
+            let alertContext = "Illuminance limit of " + ALARM_THRESHOLD_ILLUMINANCE + ' exceeded! \n Current illuminance: ' +light;
+            sendAlertMail(alertContext);
             alertStatus = true;
         }
     }).catch((error) => {
@@ -121,17 +123,19 @@ function checkSensors() {
     return alertStatus;
 }
 
-
 ipcon.connect(HOST, PORT);
 
 ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED, function() {
     console.log('IP Connection established.');
-
-    let intervalId = setInterval(() => {
-        const result = checkSensors();
-        if (result === true) {
-            clearInterval(intervalId);
-        }
-    }, 6000);
+    try {
+        let intervalId = setInterval(() => {
+            const result = checkSensors();
+            if (result === true) {
+                clearInterval(intervalId);
+            }
+        }, 6000);
+    } catch (exception) {
+        console.log("Error thrown while running the server checkups:\n " + exception);
+    }
 });
 
