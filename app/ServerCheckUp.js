@@ -33,7 +33,7 @@ function checkSensors() {
                 alertStatus = true;
             }
         }).catch((error) => {
-        console.error("Motion Error occurred:", error);
+        console.error("Motion-Sensor error occurred:", error);
     });
 
     function getMotionDetectedPromise() {
@@ -57,7 +57,7 @@ function checkSensors() {
             alertStatus = true;
         }
     }).catch((error) => {
-        console.error("Temperature Error occurred:", error);
+        console.error("Temperature-Sensor error occurred:", error);
     });
 
     function getTemperaturePromise() {
@@ -81,7 +81,7 @@ function checkSensors() {
             alertStatus = true;
         }
     }).catch((error) => {
-        console.error("Humidity Error occurred:", error);
+        console.error("Humidity-Sensor error occurred:", error);
     });
 
     function getHumidityPromise() {
@@ -105,7 +105,7 @@ function checkSensors() {
             alertStatus = true;
         }
     }).catch((error) => {
-        console.error("Illuminance Error occurred:", error);
+        console.error("Illuminance-Sensor error occurred:", error);
     });
 
     function getLightPromise() {
