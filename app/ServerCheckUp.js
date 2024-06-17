@@ -12,9 +12,9 @@ const MOTI = "ML4";
 const PIEZ = "R7M";
 const LIGHT = "Pdw";
 
-const ALARM_THRESHOLD_TEMP = 55;
-const ALARM_THRESHOLD_HUMI = 1000;
-const ALARM_THRESHOLD_ILLUMINANCE = 7000;
+const ALARM_THRESHOLD_TEMP = 25;
+const ALARM_THRESHOLD_HUMI = 60;
+const ALARM_THRESHOLD_ILLUMINANCE = 9;
 
 let ipcon = new Tinkerforge.IPConnection();
 let temperatureSensor = new BrickletPTCV2(TEMP, ipcon);
@@ -23,11 +23,13 @@ let motionDetector = new BrickletMotionDetectorV2(MOTI, ipcon);
 let speaker = new BrickletPiezoSpeakerV2(PIEZ, ipcon);
 let lightSensor = new BrickletAmbientLightV3(LIGHT, ipcon);
 
+
 function checkSensors() {
     let alertStatus = false;
     getMotionDetectedPromise().then((motionDetected) => {
             if (motionDetected) {
                 speaker.setAlarm(250, 750, 1, 5, 0, 5000);
+                console.log('Motions detected near the server!')
                 let alertContext = "Motions detected near the server!";
                 sendAlertMail(alertContext);
                 alertStatus = true;
@@ -50,9 +52,10 @@ function checkSensors() {
     }
 
     getTemperaturePromise().then((temp) => {
-        if (temp > ALARM_THRESHOLD_TEMP) {
+            let realTemp = temp / 100;
+        if (realTemp > ALARM_THRESHOLD_TEMP) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            let alertContext = "Temperature limit of " + ALARM_THRESHOLD_TEMP + ' exceeded! \n Current Temperature: ' +temp;
+            let alertContext = "Temperature limit of " + ALARM_THRESHOLD_TEMP + ' exceeded! \n Current Temperature: ' +realTemp + 'C';
             sendAlertMail(alertContext);
             alertStatus = true;
         }
@@ -74,9 +77,11 @@ function checkSensors() {
     }
 
     getHumidityPromise().then((humi) => {
-        if (humi > ALARM_THRESHOLD_HUMI) {
+        let realHumi = humi /100;
+        if (realHumi > ALARM_THRESHOLD_HUMI) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            let alertContext = "Humidity limit of " + ALARM_THRESHOLD_HUMI + ' exceeded! \n Current humidity: ' +humi;
+
+            let alertContext = "Humidity limit of " + ALARM_THRESHOLD_HUMI + ' exceeded! \n Current humidity: ' +realHumi + '%';
             sendAlertMail(alertContext);
             alertStatus = true;
         }
@@ -98,9 +103,10 @@ function checkSensors() {
     }
 
     getLightPromise().then((light) => {
+        let realLight = light /100;
         if (light > ALARM_THRESHOLD_ILLUMINANCE) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            let alertContext = "Illuminance limit of " + ALARM_THRESHOLD_ILLUMINANCE + ' exceeded! \n Current illuminance: ' +light;
+            let alertContext = "Illuminance limit of " + ALARM_THRESHOLD_ILLUMINANCE + ' exceeded! \n Current illuminance: ' +realLight + 'x';
             sendAlertMail(alertContext);
             alertStatus = true;
         }
