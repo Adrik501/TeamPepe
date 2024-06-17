@@ -55,7 +55,8 @@ function checkSensors() {
             let realTemp = temp / 100;
         if (realTemp > ALARM_THRESHOLD_TEMP) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            let alertContext = "Temperature limit of " + ALARM_THRESHOLD_TEMP + ' exceeded! \n Current Temperature: ' +realTemp + 'C';
+            console.log("Temperature limit of " + ALARM_THRESHOLD_TEMP + " exceeded! Current Temperature: " +realTemp + "C")
+            let alertContext = "Temperature limit of " + ALARM_THRESHOLD_TEMP + " exceeded! \n Current Temperature: " +realTemp + "C";
             sendAlertMail(alertContext);
             alertStatus = true;
         }
@@ -80,8 +81,8 @@ function checkSensors() {
         let realHumi = humi /100;
         if (realHumi > ALARM_THRESHOLD_HUMI) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-
-            let alertContext = "Humidity limit of " + ALARM_THRESHOLD_HUMI + ' exceeded! \n Current humidity: ' +realHumi + '%';
+            console.log("Humidity limit of " + ALARM_THRESHOLD_HUMI + " exceeded! Current humidity: " + realHumi + "%")
+            let alertContext = "Humidity limit of " + ALARM_THRESHOLD_HUMI + " exceeded! \n Current humidity: " + realHumi + "%";
             sendAlertMail(alertContext);
             alertStatus = true;
         }
@@ -106,7 +107,8 @@ function checkSensors() {
         let realLight = light /100;
         if (light > ALARM_THRESHOLD_ILLUMINANCE) {
             speaker.setAlarm(250, 750, 1, 5, 0, 5000);
-            let alertContext = "Illuminance limit of " + ALARM_THRESHOLD_ILLUMINANCE + ' exceeded! \n Current illuminance: ' +realLight + 'x';
+            console.log("Illuminance limit of " + ALARM_THRESHOLD_ILLUMINANCE + " exceeded! Current illuminance: " +realLight + "x")
+            let alertContext = "Illuminance limit of " + ALARM_THRESHOLD_ILLUMINANCE + " exceeded! \n Current illuminance: " +realLight + "x";
             sendAlertMail(alertContext);
             alertStatus = true;
         }
